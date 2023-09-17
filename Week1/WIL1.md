@@ -35,3 +35,5 @@
         
 Parameter 계산하기
         > (필터크기 * 이전 레이어 feature map 개수 + 1) * (다음 레이어 feature map 개수)
+        
+선형대수에서의 kernel != CNN에서의 kernel
