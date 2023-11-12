@@ -1,13 +1,3 @@
-<h3>강의 목차</h3>
-
-1. Introduction to NLP Task
-2. Word Embedding
-3. RNN, LSTM, GRU
-4. Seq2Seq with attention
-5. Beam Search
-6. Metric
-
-
 <h2>NLP</h2>
 
 - NLU: Understanding
@@ -33,7 +23,7 @@
 
 > Recurrent Neural Networks
 
-$\begin{align*}x_t\rarr&\text{RNN}\rarr h_t\\ &\darr\\x_{t+1}\rarr&\text{RNN}\rarr h_{t+1}\end{align*}$
+$x_t\rarr\text{RNN}\rarr h_t\\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \darr\\x_{t+1}\rarr\text{RNN}\rarr h_{t+1}$
 $h_t=f_t(h_{t-1},x_t)$
 
 종류
