@@ -1,0 +1,95 @@
+# MRC
+## MRC 데이터셋
+1. Extractive answer dataset
+> 글을 읽고 이 글에 대한 질문에 대답
+2. Descriptive / Narrative answer dataset
+> 여러 글을 읽고 context에 맞게 질문에 대해 대답 
+3. Multiple choice
+> 글을 읽고 맞는 내용 고르기
+
+## MRC의 어려움
+1. 같은 말을 하는데 다른 단어를 사용한 경우 이를 이해하는 것
+> 해결: context 기반 모델 (GPT, BERT) 사용
+2. 주어진 지문에서 질문에 대한 답을 찾을 수 없음
+> 해결: "답 없음" 카테고리 학습
+3. Multi-hop resoning
+    > 단일 정보원에서 바로 답을 얻을 수 없는 경우 답을 얻기 위해 여러 글이나 context들 간의 연결고리를 찾아야 하는 경우.
+
+> 해결: 그래프 신경망
+
+## MRC의 평가 방법
+- Exact match: 예측값과 정답이 정확히 일치하는 경우에만 점수를 줌
+- F1 score: `precision`과 `recall`의 조화평균
+- ROGUE-L: 단어단위 LCS(Longest Common Sequence)의 길이로 점수를 매김
+- BLEU: `1~4gram precision`의 기하평균에 `brevity penalty`를 곱함
+
+---
+---
+---
+# 과제
+## Transformers 라이브러리
+```python
+pip install transformers -q
+```
+반복되는 작업을 간편하게 수행할 수 있게 하여 모델을 쉽게 생성, 학습, 배포할 수 있는 Highlevel Library.
+
+### NLP 모델의 Pipeline
+`Input` -> `Tokenization` -> `Model training/Inference` -> `Post-Processing` -> `Output`
+
+## Tokenizer
+### Tokenize
+텍스트 데이터를 모델이 이해할 수 있는 형태로 변환하는 과정
+
+```python
+from transformers import AutoTokenizer
+
+example = "some string"
+model_name = 'bert-base-cased'  # 영어용
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+```
+
+```python
+model_name = 'klue/bert-base'  # 한국어용
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+```
+
+## Config
+- 모델의 컨피규레이션 가져오기
+```python
+from transformers import AutoConfig
+
+model_name = 'klue/bert-base'
+model_config = AutoConfig.from_pretrained(model_name)
+```
+
+## Pretrain model
+- 사전학습된 모델 불러오기
+```python
+from transformers import AutoModelForQuestionAnswering
+
+model_name = 'klue/bert-base'
+model = AutoModelForQuestionAnswering.from_pretrained(model_name, config=model_config)
+```
+
+## Trainer
+
+- 모델 학습을 위해 Trainer를 아래와 같은 구조로 사용
+
+1. TrainingArguments 설정
+2. Trainer 호출
+3. 학습 / 추론 진행
+
+### Datasets
+
+Huggingface의 datasets 라이브러리를 사용하여 한국어 MRC 데이터셋(KorQuAD) 불러오기
+
+```python
+pip install datasets -q
+```
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("squad_kor_v1")
+```
+dataset의 내용은 `dataset["train"][<index>]`로 볼 수 있음
